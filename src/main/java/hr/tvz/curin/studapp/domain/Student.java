@@ -12,11 +12,11 @@ public class Student {
     public String firstName;
     public String lastName;
     public LocalDate dateOfBirth;
-    public Long JMBAG;
+    public String JMBAG;
     public int ECTS;
     public boolean shouldStudentPayFee;
 
-    public Student(String firstName, String lastName, LocalDate dateOfBirth, Long JMBAG, int ECTS) {
+    public Student(String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;

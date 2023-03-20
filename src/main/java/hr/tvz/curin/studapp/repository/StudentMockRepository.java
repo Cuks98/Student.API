@@ -18,7 +18,7 @@ public class StudentMockRepository implements StudentRepository{
                 "Pero",
                 "Perić",
                 LocalDate.of(1990, 1, 8),
-                0000000000L,
+                "00000000000",
                 123
                 )
         );
@@ -26,7 +26,7 @@ public class StudentMockRepository implements StudentRepository{
                         "Ivo",
                         "Ivić",
                         LocalDate.of(2020, 1, 8),
-                        0000000001L,
+                "00000000001",
                         123
                 )
         );
@@ -39,7 +39,7 @@ public class StudentMockRepository implements StudentRepository{
     @Override
     public Optional<Student> findStudentByJMBAG(String JMBAG) {
         return studentList.stream()
-                .filter(x -> x.JMBAG == Long.parseLong(JMBAG))
+                .filter(x -> x.JMBAG.equals(JMBAG))
                 .findFirst();
     }
 }

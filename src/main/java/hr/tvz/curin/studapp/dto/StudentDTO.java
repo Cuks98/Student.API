@@ -9,17 +9,17 @@ import java.time.Period;
 @Data
 @AllArgsConstructor
 public class StudentDTO {
-    public Long jmbag;
+    public String jmbag;
     public int ects;
     public boolean shouldStudentPayFee;
 
-    public StudentDTO(String firstName, String lastName, LocalDate dateOfBirth, Long JMBAG, int ECTS) {
+    public StudentDTO(String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS) {
         this.jmbag = JMBAG;
         this.ects = ECTS;
         this.setShouldStudentPayFee(dateOfBirth);
     }
 
-    public StudentDTO(Long JMBAG, int ECTS, LocalDate dateOfBirth){
+    public StudentDTO(String JMBAG, int ECTS, LocalDate dateOfBirth){
         this.jmbag = JMBAG;
         this.ects = ECTS;
         this.setShouldStudentPayFee(dateOfBirth);
