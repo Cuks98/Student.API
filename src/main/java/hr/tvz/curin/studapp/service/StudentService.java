@@ -9,4 +9,6 @@ public interface StudentService {
     List<StudentDTO> findAll();
 
     Optional<StudentDTO> findStudentByJMBAG(String JMBAG);
+
+    List<StudentDTO> findStudentForLab(String jmbagContains, int ects, boolean isPaying, int age);
 }

@@ -33,6 +33,13 @@ public class StudentServiceImpl implements StudentService{
         }
     }
 
+    @Override
+    public List<StudentDTO> findStudentForLab(String jmbagContains, int ects, boolean isPaying, int age) {
+        List<Student> students;
+        students = studentRepository.findStudentsForLab(jmbagContains, ects, isPaying, age);
+        return students.stream().map(this::mapStudentToStudentDto).collect(Collectors.toList());
+    }
+
     private StudentDTO mapStudentToStudentDto(Student student){
         StudentDTO studentDto = new StudentDTO(student.JMBAG, student.ECTS, student.dateOfBirth);
 

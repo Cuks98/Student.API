@@ -37,4 +37,13 @@ public class StudentController {
         logger.info("Method get-student responded with {}", response);
         return studentService.findStudentByJMBAG(id);
     }
+
+    @GetMapping("get-students-for-lab")
+    List<StudentDTO> getStudentsForLab(){
+        boolean isPaying = true;
+        String jmbagContains = "0032";
+        int ects = 6;
+        int age = 25;
+        return studentService.findStudentForLab(jmbagContains, ects, isPaying, age);
+    }
 }
