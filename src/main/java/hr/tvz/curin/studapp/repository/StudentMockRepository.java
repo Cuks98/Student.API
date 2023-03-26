@@ -1,6 +1,8 @@
 package hr.tvz.curin.studapp.repository;
 
+import hr.tvz.curin.studapp.commands.StudentCommand;
 import hr.tvz.curin.studapp.domain.Student;
+import hr.tvz.curin.studapp.dto.StudentDTO;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -13,24 +15,25 @@ import java.util.stream.Collectors;
 
 @Repository
 @Profile("!dev")
-public class StudentMockRepository implements StudentRepository{
+public class StudentMockRepository implements StudentRepository {
 
     private List<Student> studentList;
-    public StudentMockRepository(){
+
+    public StudentMockRepository() {
         studentList = new ArrayList<Student>();
         studentList.add(new Student(
-                "Pero",
-                "Perić",
-                LocalDate.of(1990, 1, 8),
-                "00000000000",
-                123
+                        "Pero",
+                        "Perić",
+                        LocalDate.of(1990, 1, 8),
+                        "00000000000",
+                        123
                 )
         );
         studentList.add(new Student(
                         "Ivo",
                         "Ivić",
                         LocalDate.of(2020, 1, 8),
-                "00000000001",
+                        "00000000001",
                         123
                 )
         );
@@ -43,6 +46,7 @@ public class StudentMockRepository implements StudentRepository{
                 )
         );
     }
+
     @Override
     public List<Student> findAll() {
         return studentList;
@@ -59,10 +63,26 @@ public class StudentMockRepository implements StudentRepository{
     @Override
     public List<Student> findStudentsForLab(String jmbag, int ects, boolean isPaying, int age) {
         return studentList.stream()
-                .filter(x-> x.JMBAG.startsWith(jmbag)
+                .filter(x -> x.JMBAG.startsWith(jmbag)
                         && x.ECTS > ects
                         && x.shouldStudentPayFee == isPaying
                         && Period.between(x.dateOfBirth, LocalDate.now()).getYears() > 25)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Student save(Student student) {
+        studentList.add(student);
+        return student;
+    }
+
+    @Override
+    public boolean deleteStudent(Student student) {
+        try {
+            studentList.remove(student);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

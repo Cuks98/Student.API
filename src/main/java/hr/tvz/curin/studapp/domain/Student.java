@@ -5,10 +5,24 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
 public class Student {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return JMBAG.equals(student.JMBAG);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(JMBAG);
+    }
+
     public String firstName;
     public String lastName;
     public LocalDate dateOfBirth;

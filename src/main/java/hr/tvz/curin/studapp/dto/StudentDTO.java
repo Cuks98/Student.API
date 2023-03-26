@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +13,19 @@ public class StudentDTO {
     public String jmbag;
     public int ects;
     public boolean shouldStudentPayFee;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentDTO that = (StudentDTO) o;
+        return ects == that.ects && shouldStudentPayFee == that.shouldStudentPayFee && jmbag.equals(that.jmbag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jmbag, ects, shouldStudentPayFee);
+    }
 
     public StudentDTO(String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS) {
         this.jmbag = JMBAG;

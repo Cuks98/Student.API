@@ -1,24 +1,27 @@
 package hr.tvz.curin.studapp.controllers;
 
+import hr.tvz.curin.studapp.commands.StudentCommand;
 import hr.tvz.curin.studapp.dto.StudentDTO;
 import hr.tvz.curin.studapp.service.StudentService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("students")
+@Valid
 public class StudentController {
 
     Logger logger = LoggerFactory.getLogger(StudentController.class);
     private StudentService studentService;
-    public StudentController(StudentService studentService){
+
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
@@ -31,19 +34,39 @@ public class StudentController {
     }
 
     @GetMapping("/get-student/{id}")
-    Optional<StudentDTO> getStudentByJmbag(@PathVariable String id){
-        logger.info("Method get-student called with request: {}", id);
+    ResponseEntity<StudentDTO> getStudentByJmbag(@PathVariable String id) {
         Optional<StudentDTO> response = studentService.findStudentByJMBAG(id);
-        logger.info("Method get-student responded with {}", response);
-        return studentService.findStudentByJMBAG(id);
+        if(response.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(response.get());
+        }
+        return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("get-students-for-lab")
-    List<StudentDTO> getStudentsForLab(){
+    List<StudentDTO> getStudentsForLab() {
         boolean isPaying = true;
         String jmbagContains = "0032";
         int ects = 6;
         int age = 25;
         return studentService.findStudentForLab(jmbagContains, ects, isPaying, age);
+    }
+
+    @PostMapping("add-new-student")
+    public ResponseEntity<StudentDTO> addStudent(@Valid @RequestBody final StudentCommand request) {
+        StudentDTO studentDTO = studentService.save(request);
+        if (studentDTO != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(studentDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+    @DeleteMapping("delete-student/{jmbag}")
+    public ResponseEntity deleteStudent(@PathVariable String jmbag){
+        boolean response = studentService.deleteStudent(jmbag);
+        if(response == true){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }
