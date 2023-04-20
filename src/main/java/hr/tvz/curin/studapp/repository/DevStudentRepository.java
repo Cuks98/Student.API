@@ -37,4 +37,9 @@ public class DevStudentRepository implements StudentRepository{
     public boolean deleteStudent(Student student) {
         return false;
     }
+
+    @Override
+    public Student updateStudent(Student student) {
+        return null;
+    }
 }

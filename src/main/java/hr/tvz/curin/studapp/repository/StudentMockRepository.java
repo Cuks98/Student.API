@@ -25,7 +25,7 @@ public class StudentMockRepository implements StudentRepository {
                         "Pero",
                         "Perić",
                         LocalDate.of(1990, 1, 8),
-                        "00000000000",
+                        "0000000000",
                         123
                 )
         );
@@ -33,7 +33,7 @@ public class StudentMockRepository implements StudentRepository {
                         "Ivo",
                         "Ivić",
                         LocalDate.of(2020, 1, 8),
-                        "00000000001",
+                        "0000000001",
                         123
                 )
         );
@@ -84,5 +84,18 @@ public class StudentMockRepository implements StudentRepository {
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    @Override
+    public Student updateStudent(Student student){
+        Optional<Student> stu = studentList.stream()
+                .filter(x -> x.JMBAG.equals(student.JMBAG))
+                .findFirst();
+        if(stu.isPresent()){
+            stu.get().firstName = student.firstName;
+            stu.get().lastName = student.lastName;
+            stu.get().ECTS = student.ECTS;
+        }
+        return stu.get();
     }
 }

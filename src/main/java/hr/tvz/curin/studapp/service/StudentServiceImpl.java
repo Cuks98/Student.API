@@ -6,6 +6,8 @@ import hr.tvz.curin.studapp.dto.StudentDTO;
 import hr.tvz.curin.studapp.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,8 +64,24 @@ public class StudentServiceImpl implements StudentService{
         }
     }
 
+    @Override
+    public StudentDTO updateStudent(StudentCommand student) {
+        Student req = mapStudentCommandToStudent(student);
+        try{
+            Student res = studentRepository.updateStudent(req);
+            return mapStudentToStudentDto(res);
+        }
+        catch (SQLException ex){
+            return null;
+        }
+
+    }
+
     private StudentDTO mapStudentToStudentDto(Student student){
-        StudentDTO studentDto = new StudentDTO(student.JMBAG, student.ECTS, student.dateOfBirth);
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(1);
+        list.add(2);
+        StudentDTO studentDto = new StudentDTO(student.JMBAG, student.ECTS, student.dateOfBirth, list);
 
         return studentDto;
     }

@@ -22,7 +22,7 @@ public class Student {
     public int hashCode() {
         return Objects.hash(JMBAG);
     }
-
+    public long id;
     public String firstName;
     public String lastName;
     public LocalDate dateOfBirth;
@@ -31,6 +31,16 @@ public class Student {
     public boolean shouldStudentPayFee;
 
     public Student(String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.JMBAG = JMBAG;
+        this.ECTS = ECTS;
+        this.setShouldStudentPayFee(dateOfBirth);
+    }
+
+    public Student(long id, String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;

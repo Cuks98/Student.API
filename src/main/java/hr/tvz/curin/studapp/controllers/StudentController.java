@@ -70,4 +70,17 @@ public class StudentController {
         }
         return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+
+
+    @PostMapping("update-student")
+    public ResponseEntity<StudentDTO> UpadateStudent(@Valid @RequestBody final StudentCommand request){
+        StudentDTO studentDTO = studentService.updateStudent(request);
+        if (studentDTO != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(studentDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+
 }

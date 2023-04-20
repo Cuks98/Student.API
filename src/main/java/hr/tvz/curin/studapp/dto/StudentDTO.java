@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -13,6 +14,14 @@ public class StudentDTO {
     public String jmbag;
     public int ects;
     public boolean shouldStudentPayFee;
+    public List<Integer> classes;
+
+    public StudentDTO(String jmbag, int ects, LocalDate dateOfBirth, List<Integer> classes) {
+        this.jmbag = jmbag;
+        this.ects = ects;
+        this.setShouldStudentPayFee(dateOfBirth);
+        this.classes = classes;
+    }
 
     @Override
     public boolean equals(Object o) {
