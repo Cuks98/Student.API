@@ -42,4 +42,14 @@ public class DevStudentRepository implements StudentRepository{
     public Student updateStudent(Student student) {
         return null;
     }
+
+    @Override
+    public Optional<List<Student>> getStudentsByGender(String request) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<Student>> getStudentsByCity(String request) {
+        return Optional.empty();
+    }
 }

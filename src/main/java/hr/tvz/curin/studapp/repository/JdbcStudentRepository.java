@@ -68,18 +68,44 @@ public class JdbcStudentRepository implements StudentRepository{
                 "first_name = ?, " +
                 "last_name = ?, " +
                 "ects_points = ?, " +
-                "date_of_birth = ? " +
+                "date_of_birth = ? ," +
+                        "gender = ? ," +
+                        "address = ? ," +
+                        "city = ? " +
                 "WHERE jmbag = ?",
                 student.firstName,
                 student.lastName,
                 student.ECTS,
                 student.dateOfBirth,
+                student.gender,
+                student.address,
+                student.city,
                 student.JMBAG
                 );
         if(executed > 0){
             return student;
         }
         return null;
+    }
+
+    public Optional<List<Student>> getStudentsByGender(String request){
+        try{
+            return Optional.ofNullable(
+                    List.copyOf(jdbc.query(SELECT_ALL + " WHERE gender = ?", this::mapRowToStudent, request))
+            );
+        }catch (EmptyResultDataAccessException ex){
+            return Optional.empty();
+        }
+    }
+
+    public Optional<List<Student>> getStudentsByCity(String request){
+        try{
+            return Optional.ofNullable(
+                    List.copyOf(jdbc.query(SELECT_ALL + " WHERE city = ?", this::mapRowToStudent, request))
+            );
+        }catch (EmptyResultDataAccessException ex){
+            return Optional.empty();
+        }
     }
 
     private Student mapRowToStudent(ResultSet rs, int rowNum) throws SQLException{
@@ -89,7 +115,10 @@ public class JdbcStudentRepository implements StudentRepository{
                 rs.getString("last_name"),
                 rs.getDate("date_of_birth").toLocalDate(),
                 rs.getString("jmbag"),
-                rs.getInt("ects_points")
+                rs.getInt("ects_points"),
+                rs.getString("gender"),
+                rs.getString("address"),
+                rs.getString("city")
         );
     }
 
@@ -101,6 +130,9 @@ public class JdbcStudentRepository implements StudentRepository{
         values.put("jmbag", student.JMBAG);
         values.put("date_of_birth", student.dateOfBirth);
         values.put("ects_points", student.ECTS);
+        values.put("gender", student.gender);
+        values.put("address", student.address);
+        values.put("city", student.city);
         return inserter.executeAndReturnKey(values).longValue();
     }
 }

@@ -16,4 +16,6 @@ public interface StudentRepository {
     Student save(Student student);
     boolean deleteStudent(Student student);
     Student updateStudent(Student student) throws SQLException;
+    Optional<List<Student>> getStudentsByGender(String request);
+    Optional<List<Student>> getStudentsByCity(String request);
 }

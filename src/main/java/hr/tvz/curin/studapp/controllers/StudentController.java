@@ -2,6 +2,7 @@ package hr.tvz.curin.studapp.controllers;
 
 import hr.tvz.curin.studapp.commands.StudentCommand;
 import hr.tvz.curin.studapp.dto.StudentDTO;
+import hr.tvz.curin.studapp.dto.StudentSecondDTO;
 import hr.tvz.curin.studapp.service.StudentService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -80,6 +81,24 @@ public class StudentController {
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+    }
+
+    @GetMapping("get-by-gender/{gender}")
+    public ResponseEntity<List<StudentSecondDTO>> getByGender(@PathVariable String gender){
+        Optional<List<StudentSecondDTO>> response = studentService.getStudentsByGender(gender);
+        if(response.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(response.get());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    @GetMapping("get-by-city/{city}")
+    public ResponseEntity<List<StudentSecondDTO>> getByCity(@PathVariable String city){
+        Optional<List<StudentSecondDTO>> response = studentService.getStudentsByCity(city);
+        if(response.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(response.get());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 
 

@@ -15,12 +15,26 @@ public class StudentDTO {
     public int ects;
     public boolean shouldStudentPayFee;
     public List<Integer> classes;
+    public String gender;
+    public String address;
+    public String city;
 
     public StudentDTO(String jmbag, int ects, LocalDate dateOfBirth, List<Integer> classes) {
         this.jmbag = jmbag;
         this.ects = ects;
         this.setShouldStudentPayFee(dateOfBirth);
         this.classes = classes;
+    }
+
+    public StudentDTO(String jmbag, int ects, LocalDate dateOfBirth, List<Integer> classes,
+                      String gender, String address, String city) {
+        this.jmbag = jmbag;
+        this.ects = ects;
+        this.setShouldStudentPayFee(dateOfBirth);
+        this.classes = classes;
+        this.gender = gender;
+        this.address = address;
+        this.city = city;
     }
 
     @Override

@@ -28,6 +28,10 @@ public class Student {
     public LocalDate dateOfBirth;
     public String JMBAG;
     public int ECTS;
+
+    public String gender;
+    public String address;
+    public String city;
     public boolean shouldStudentPayFee;
 
     public Student(String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS) {
@@ -37,6 +41,30 @@ public class Student {
         this.JMBAG = JMBAG;
         this.ECTS = ECTS;
         this.setShouldStudentPayFee(dateOfBirth);
+    }
+
+    public Student(long id,String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS, String gender, String address, String city) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.JMBAG = JMBAG;
+        this.ECTS = ECTS;
+        this.setShouldStudentPayFee(dateOfBirth);
+        this.gender = gender;
+        this.address = address;
+        this.city = city;
+        this.id = id;
+    }
+    public Student(String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS, String gender, String address, String city) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.JMBAG = JMBAG;
+        this.ECTS = ECTS;
+        this.setShouldStudentPayFee(dateOfBirth);
+        this.gender = gender;
+        this.address = address;
+        this.city = city;
     }
 
     public Student(long id, String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS) {

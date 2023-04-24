@@ -19,3 +19,7 @@ create table if not exists student_course (
     constraint fk_course foreign key (course_id) references course(id)
 );
 
+alter table student add gender varchar(100) null;
+alter table student add address varchar(100) null;
+alter table student add city varchar(100) null;
+

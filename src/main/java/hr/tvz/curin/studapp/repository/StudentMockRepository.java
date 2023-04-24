@@ -98,4 +98,14 @@ public class StudentMockRepository implements StudentRepository {
         }
         return stu.get();
     }
+
+    @Override
+    public Optional<List<Student>> getStudentsByGender(String request) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<Student>> getStudentsByCity(String request) {
+        return Optional.empty();
+    }
 }

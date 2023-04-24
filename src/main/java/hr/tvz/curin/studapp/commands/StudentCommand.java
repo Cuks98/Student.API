@@ -28,4 +28,7 @@ public class StudentCommand {
     @Max(message = "Number of ECTS can not be greater then 480", value = 480)
     public int ects;
     public boolean shouldStudentPayFee;
+    public String gender;
+    public String address;
+    public String city;
 }

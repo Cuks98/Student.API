@@ -2,7 +2,9 @@ package hr.tvz.curin.studapp.service;
 
 import hr.tvz.curin.studapp.commands.StudentCommand;
 import hr.tvz.curin.studapp.domain.Student;
+import hr.tvz.curin.studapp.dto.StudentCourseDTO;
 import hr.tvz.curin.studapp.dto.StudentDTO;
+import hr.tvz.curin.studapp.dto.StudentSecondDTO;
 import hr.tvz.curin.studapp.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -81,9 +83,33 @@ public class StudentServiceImpl implements StudentService{
         List<Integer> list = new ArrayList<Integer>();
         list.add(1);
         list.add(2);
-        StudentDTO studentDto = new StudentDTO(student.JMBAG, student.ECTS, student.dateOfBirth, list);
+        StudentDTO studentDto = new StudentDTO(
+                student.JMBAG,
+                student.ECTS,
+                student.dateOfBirth,
+                list,
+                student.gender,
+                student.address,
+                student.city
+        );
 
         return studentDto;
+    }
+
+    public Optional<List<StudentSecondDTO>> getStudentsByGender(String request){
+        Optional<List<Student>> response = studentRepository.getStudentsByGender(request);
+        if (response.isPresent()){
+            return Optional.of(response.get().stream().map(this::mapStudentToStudentSecondDTO).collect(Collectors.toList()));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<List<StudentSecondDTO>> getStudentsByCity(String request){
+        Optional<List<Student>> response = studentRepository.getStudentsByCity(request);
+        if (response.isPresent()){
+            return Optional.of(response.get().stream().map(this::mapStudentToStudentSecondDTO).collect(Collectors.toList()));
+        }
+        return Optional.empty();
     }
 
     private Student mapStudentCommandToStudent(StudentCommand command){
@@ -92,8 +118,15 @@ public class StudentServiceImpl implements StudentService{
                 command.lastName,
                 command.dateOfBirth,
                 command.jmbag,
-                command.ects
+                command.ects,
+                command.gender,
+                command.address,
+                command.city
         );
         return student;
+    }
+
+    private StudentSecondDTO mapStudentToStudentSecondDTO(Student student){
+        return  new StudentSecondDTO(student.JMBAG,student.gender, student.city);
     }
 }
