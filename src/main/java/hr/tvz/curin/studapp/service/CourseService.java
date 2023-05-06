@@ -4,6 +4,7 @@ import hr.tvz.curin.studapp.commands.CourseCommand;
 import hr.tvz.curin.studapp.domain.Course;
 import hr.tvz.curin.studapp.dto.CourseDTO;
 import hr.tvz.curin.studapp.repository.CourseRepository;
+import hr.tvz.curin.studapp.repository.ICourseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,10 @@ import java.util.stream.Collectors;
 public class CourseService implements ICourseService{
 
     public CourseRepository courseRepository;
-    public CourseService(CourseRepository courseRepository){
+    public ICourseRepository jpaCourseRepository;
+    public CourseService(CourseRepository courseRepository, ICourseRepository jpaCourseRepository){
         this.courseRepository = courseRepository;
+        this.jpaCourseRepository = jpaCourseRepository;
     }
     @Override
     public List<CourseDTO> getAll() {
@@ -50,6 +53,24 @@ public class CourseService implements ICourseService{
         if(courseRepository.delete(id))
             return true;
         return false;
+    }
+
+    @Override
+    public Optional<List<CourseDTO>> getCourseByStudentJmbag(String jmbag) {
+        List<CourseDTO> response = jpaCourseRepository.findAllByStudents_JMBAG(jmbag)
+                .stream()
+                .map(this::mapCourseToCourseDTO)
+                .collect(Collectors.toList());
+        return Optional.of(response);
+    }
+
+    @Override
+    public Optional<List<CourseDTO>> getAllWithJpa() {
+        List<CourseDTO> response = jpaCourseRepository.findAll()
+                .stream()
+                .map(this::mapCourseToCourseDTO)
+                .collect(Collectors.toList());
+        return Optional.of(response);
     }
 
     private CourseDTO mapCourseToCourseDTO(Course request){

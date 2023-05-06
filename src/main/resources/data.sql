@@ -11,6 +11,8 @@ values ('Programiranje u Javi', 5);
 insert into student_course(student_id, course_id)
 values ( 1, 1 );
 insert into student_course(student_id, course_id)
+values ( 1, 2 );
+insert into student_course(student_id, course_id)
 values ( 2, 1 );
 insert into student_course(student_id, course_id)
 values ( 2, 2 );

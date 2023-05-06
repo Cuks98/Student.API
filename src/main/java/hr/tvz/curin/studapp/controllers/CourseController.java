@@ -66,4 +66,20 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.OK).body(response.get());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
+
+    @GetMapping("get-all-jpa")
+    public ResponseEntity<List<CourseDTO>> getAllCoursesJpa(){
+        Optional<List<CourseDTO>> response =courseService.getAllWithJpa();
+        if(!response.isPresent())
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(response.get());
+    }
+
+    @GetMapping("get-all-by-student-jmbag/{jmbag}")
+    public ResponseEntity<List<CourseDTO>> getAllCoursesByStudentJmabg(@PathVariable String jmbag){
+        Optional<List<CourseDTO>> response =courseService.getCourseByStudentJmbag(jmbag);
+        if(!response.isPresent())
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(response.get());
+    }
 }

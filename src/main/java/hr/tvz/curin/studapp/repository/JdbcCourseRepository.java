@@ -68,6 +68,11 @@ public class JdbcCourseRepository implements CourseRepository{
         return false;
     }
 
+    @Override
+    public Optional<List<Course>> getCoursesByJmbag(String jmbag) {
+        return Optional.empty();
+    }
+
     private Course mapRowToCourse(ResultSet rs, int rowNum) throws SQLException{
         return new Course(rs.getLong("id"), rs.getString("name"), rs.getInt("ects_points"));
     }

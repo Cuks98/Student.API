@@ -13,4 +13,6 @@ public interface ICourseService {
     Optional<CourseDTO> add(CourseCommand request);
     Optional<CourseDTO> update(CourseCommand request);
     boolean delete(long id);
+    Optional<List<CourseDTO>> getCourseByStudentJmbag(String jmbag);
+    Optional<List<CourseDTO>> getAllWithJpa();
 }
