@@ -18,6 +18,8 @@ public class StudentDTO {
     public String gender;
     public String address;
     public String city;
+    public String aboutMeHr;
+    public String aboutMeEn;
 
     public StudentDTO(String jmbag, int ects, LocalDate dateOfBirth, List<Integer> classes) {
         this.jmbag = jmbag;
@@ -27,7 +29,7 @@ public class StudentDTO {
     }
 
     public StudentDTO(String jmbag, int ects, LocalDate dateOfBirth, List<Integer> classes,
-                      String gender, String address, String city) {
+                      String gender, String address, String city, String aboutMeHr, String aboutMeEn) {
         this.jmbag = jmbag;
         this.ects = ects;
         this.setShouldStudentPayFee(dateOfBirth);
@@ -35,6 +37,8 @@ public class StudentDTO {
         this.gender = gender;
         this.address = address;
         this.city = city;
+        this.aboutMeHr = aboutMeHr;
+        this.aboutMeEn = aboutMeEn;
     }
 
     @Override

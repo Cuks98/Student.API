@@ -90,7 +90,9 @@ public class StudentServiceImpl implements StudentService{
                 list,
                 student.gender,
                 student.address,
-                student.city
+                student.city,
+                student.aboutMeHr,
+                student.aboutMeEn
         );
 
         return studentDto;
@@ -112,16 +114,29 @@ public class StudentServiceImpl implements StudentService{
         return Optional.empty();
     }
 
+    @Override
+    public StudentDTO getStudentWithAboutMe(String jmbag, String language) {
+        Optional<Student> student;
+        student = studentRepository.findStudentByJMBAG(jmbag);
+        if(student.isPresent()){
+            if(language.equals("hr")){
+
+            }
+            return student.stream().map(this::mapStudentToStudentDto).findFirst().get();
+        }
+        return null;
+    }
+
     private Student mapStudentCommandToStudent(StudentCommand command){
         Student student = new Student(
                 command.firstName,
                 command.lastName,
                 command.dateOfBirth,
                 command.jmbag,
-                command.ects,
-                command.gender,
-                command.address,
-                command.city
+                command.ects
+//                command.gender,
+//                command.address,
+//                command.city
         );
         return student;
     }

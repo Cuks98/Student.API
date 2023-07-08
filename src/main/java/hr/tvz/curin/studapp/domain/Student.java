@@ -15,18 +15,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 public class Student {
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return JMBAG.equals(student.JMBAG);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(JMBAG);
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
@@ -41,6 +29,8 @@ public class Student {
     public String gender;
     public String address;
     public String city;
+    public String aboutMeHr;
+    public String aboutMeEn;
     public boolean shouldStudentPayFee;
 
     @ManyToMany(targetEntity = Course.class)
@@ -60,7 +50,9 @@ public class Student {
         this.setShouldStudentPayFee(dateOfBirth);
     }
 
-    public Student(long id,String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS, String gender, String address, String city) {
+    public Student(long id,String firstName, String lastName,
+                   LocalDate dateOfBirth, String JMBAG, int ECTS,
+                   String gender, String address, String city, String aboutMeHr, String aboutMeEn) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -71,8 +63,12 @@ public class Student {
         this.address = address;
         this.city = city;
         this.id = id;
+        this.aboutMeHr = aboutMeHr;
+        this.aboutMeEn = aboutMeEn;
     }
-    public Student(String firstName, String lastName, LocalDate dateOfBirth, String JMBAG, int ECTS, String gender, String address, String city) {
+    public Student(String firstName, String lastName,
+                   LocalDate dateOfBirth, String JMBAG, int ECTS, String gender,
+                   String address, String city, String aboutMe) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -108,5 +104,17 @@ public class Student {
         }else{
             this.shouldStudentPayFee = false;
         }
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return JMBAG.equals(student.JMBAG);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(JMBAG);
     }
 }

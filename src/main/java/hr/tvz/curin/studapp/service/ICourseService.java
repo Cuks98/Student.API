@@ -15,4 +15,13 @@ public interface ICourseService {
     boolean delete(long id);
     Optional<List<CourseDTO>> getCourseByStudentJmbag(String jmbag);
     Optional<List<CourseDTO>> getAllWithJpa();
+    Optional<CourseDTO> getFirstByJmbag(String jmbag);
+    Optional<List<CourseDTO>> getTop(String jmbag);
+    Optional<List<CourseDTO>> getStartsWith(String jmbag);
+    Optional<List<CourseDTO>> getEndsWith(String jmbag);
+    Optional<List<CourseDTO>> getNotIn(List<String> jmbags);
+    Optional<List<CourseDTO>> getIn(List<String> jmbags);
+    Optional<List<CourseDTO>> getAllOrderdBy();
+    Optional<List<CourseDTO>> getIgnoreCase(String jmbag);
+
 }

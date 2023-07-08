@@ -2,9 +2,12 @@ package hr.tvz.curin.studapp.service;
 
 import hr.tvz.curin.studapp.commands.CourseCommand;
 import hr.tvz.curin.studapp.domain.Course;
+import hr.tvz.curin.studapp.domain.Student;
 import hr.tvz.curin.studapp.dto.CourseDTO;
 import hr.tvz.curin.studapp.repository.CourseRepository;
 import hr.tvz.curin.studapp.repository.ICourseRepository;
+import hr.tvz.curin.studapp.repository.JdbcStudentRepository;
+import hr.tvz.curin.studapp.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +19,15 @@ public class CourseService implements ICourseService{
 
     public CourseRepository courseRepository;
     public ICourseRepository jpaCourseRepository;
-    public CourseService(CourseRepository courseRepository, ICourseRepository jpaCourseRepository){
+    public StudentRepository studentRepository;
+    public CourseService(
+            CourseRepository courseRepository,
+            ICourseRepository jpaCourseRepository,
+            StudentRepository studentRepository)
+    {
         this.courseRepository = courseRepository;
         this.jpaCourseRepository = jpaCourseRepository;
+        this.studentRepository = studentRepository;
     }
     @Override
     public List<CourseDTO> getAll() {
@@ -28,6 +37,7 @@ public class CourseService implements ICourseService{
             return null;
         }
     }
+
 
     @Override
     public Optional<CourseDTO> getCourseById(long id) {
@@ -67,6 +77,76 @@ public class CourseService implements ICourseService{
     @Override
     public Optional<List<CourseDTO>> getAllWithJpa() {
         List<CourseDTO> response = jpaCourseRepository.findAll()
+                .stream()
+                .map(this::mapCourseToCourseDTO)
+                .collect(Collectors.toList());
+        return Optional.of(response);
+    }
+
+    @Override
+    public Optional<CourseDTO> getFirstByJmbag(String jmbag) {
+        Course response = jpaCourseRepository.findFirstByStudents_JMBAG(jmbag);
+        CourseDTO mapped = mapCourseToCourseDTO(response);
+        return Optional.of(mapped);
+    }
+
+    @Override
+    public Optional<List<CourseDTO>> getTop(String jmbag) {
+        List<CourseDTO> response = jpaCourseRepository.findTop3ByStudents_JMBAGContaining(jmbag)
+                .stream()
+                .map(this::mapCourseToCourseDTO)
+                .collect(Collectors.toList());
+        return Optional.of(response);
+    }
+
+    @Override
+    public Optional<List<CourseDTO>> getStartsWith(String jmbag) {
+        List<CourseDTO> response = jpaCourseRepository.findByStudents_JMBAGStartingWith(jmbag)
+                .stream()
+                .map(this::mapCourseToCourseDTO)
+                .collect(Collectors.toList());
+        return Optional.of(response);
+    }
+
+    @Override
+    public Optional<List<CourseDTO>> getEndsWith(String jmbag) {
+        List<CourseDTO> response = jpaCourseRepository.findByStudents_JMBAGEndingWith(jmbag)
+                .stream()
+                .map(this::mapCourseToCourseDTO)
+                .collect(Collectors.toList());
+        return Optional.of(response);
+    }
+
+    @Override
+    public Optional<List<CourseDTO>> getNotIn(List<String> jmbags) {
+        List<CourseDTO> response = jpaCourseRepository.findDistinctByStudents_JMBAGNotIn(jmbags)
+                .stream()
+                .map(this::mapCourseToCourseDTO)
+                .collect(Collectors.toList());
+        return Optional.of(response);
+    }
+
+    @Override
+    public Optional<List<CourseDTO>> getIn(List<String> jmbags) {
+        List<CourseDTO> response = jpaCourseRepository.findDistinctByStudents_JMBAGIn(jmbags)
+                .stream()
+                .map(this::mapCourseToCourseDTO)
+                .collect(Collectors.toList());
+        return Optional.of(response);
+    }
+
+    @Override
+    public Optional<List<CourseDTO>> getAllOrderdBy() {
+        List<CourseDTO> response = jpaCourseRepository.findAllByOrderByEcts()
+                .stream()
+                .map(this::mapCourseToCourseDTO)
+                .collect(Collectors.toList());
+        return Optional.of(response);
+    }
+
+    @Override
+    public Optional<List<CourseDTO>> getIgnoreCase(String jmbag) {
+        List<CourseDTO> response = jpaCourseRepository.findByStudents_JMBAGIgnoreCase(jmbag)
                 .stream()
                 .map(this::mapCourseToCourseDTO)
                 .collect(Collectors.toList());

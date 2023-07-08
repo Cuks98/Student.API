@@ -19,4 +19,5 @@ public interface StudentService {
     StudentDTO updateStudent(StudentCommand student);
     Optional<List<StudentSecondDTO>> getStudentsByGender(String request);
     Optional<List<StudentSecondDTO>> getStudentsByCity(String request);
+    StudentDTO getStudentWithAboutMe(String jmbag, String language);
 }

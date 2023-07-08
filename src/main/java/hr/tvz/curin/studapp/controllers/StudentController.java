@@ -9,15 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("students")
+@RequestMapping("student")
 @Valid
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class StudentController {
 
     Logger logger = LoggerFactory.getLogger(StudentController.class);
@@ -27,7 +28,8 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping("/get-students")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    @GetMapping("")
     List<StudentDTO> all() {
         logger.info("Method get-students called with ...");
         List<StudentDTO> response = studentService.findAll();
@@ -35,9 +37,10 @@ public class StudentController {
         return response;
     }
 
-    @GetMapping("/get-student/{id}")
-    ResponseEntity<StudentDTO> getStudentByJmbag(@PathVariable String id) {
-        Optional<StudentDTO> response = studentService.findStudentByJMBAG(id);
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    @GetMapping("/{jmbag}")
+    ResponseEntity<StudentDTO> getStudentByJmbag(@PathVariable String jmbag) {
+        Optional<StudentDTO> response = studentService.findStudentByJMBAG(jmbag);
         if(response.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(response.get());
         }
@@ -53,7 +56,8 @@ public class StudentController {
         return studentService.findStudentForLab(jmbagContains, ects, isPaying, age);
     }
 
-    @PostMapping("add-new-student")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("")
     public ResponseEntity<StudentDTO> addStudent(@Valid @RequestBody final StudentCommand request) {
         StudentDTO studentDTO = studentService.save(request);
         if (studentDTO != null) {
@@ -63,7 +67,8 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping("delete-student/{jmbag}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/{jmbag}")
     public ResponseEntity deleteStudent(@PathVariable String jmbag){
         boolean response = studentService.deleteStudent(jmbag);
         if(response == true){
@@ -72,9 +77,9 @@ public class StudentController {
         return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-
-    @PostMapping("update-student")
-    public ResponseEntity<StudentDTO> UpadateStudent(@Valid @RequestBody final StudentCommand request){
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/{jmbag}")
+    public ResponseEntity<StudentDTO> UpdateStudent(@Valid @RequestBody final StudentCommand request){
         StudentDTO studentDTO = studentService.updateStudent(request);
         if (studentDTO != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(studentDTO);
@@ -101,5 +106,13 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    @GetMapping("/{jmbag}/{lang}")
+    ResponseEntity<StudentDTO> getStudentAboutMeLab(@PathVariable String jmbag, @PathVariable String lang) {
+        Optional<StudentDTO> response = studentService.findStudentByJMBAG(jmbag);
+        if(response.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(response.get());
+        }
+        return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

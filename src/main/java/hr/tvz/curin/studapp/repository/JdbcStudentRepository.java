@@ -118,7 +118,9 @@ public class JdbcStudentRepository implements StudentRepository{
                 rs.getInt("ects_points"),
                 rs.getString("gender"),
                 rs.getString("address"),
-                rs.getString("city")
+                rs.getString("city"),
+                rs.getString("aboutMeHr"),
+                rs.getString("aboutMeEn")
         );
     }
 
